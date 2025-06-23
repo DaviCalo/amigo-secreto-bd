@@ -15,8 +15,3 @@ class PrintPretty:
 
     def green(self, text: str):
         print(self._ANSI_GREEN + text + self._ANSI_RESET)
-
-
-asd = PrintPretty()
-
-asd.green("cuzinho")
