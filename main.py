@@ -1,18 +1,17 @@
 import os
-from service.connect_BD import ConnectBD
+from service.ConnectBD import ConnectBD
+from service.DataBaseService import DataBaseService
+from view.MainView import MainView
 
 class Main:
     def __init__(self, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE):
-        self.connect_BD = ConnectBD(
-                DB_USER,
-                DB_PASSWORD,
-                DB_HOST,
-                DB_PORT,
-                DB_DATABASE
-        )
+        self.connect_BD = ConnectBD(DB_USER,DB_PASSWORD,DB_HOST,DB_PORT,DB_DATABASE)
+        self.create_database = DataBaseService(self.connect_BD, DB_DATABASE)
+        self.create_database.starter()
 
     def run(self):
-        print('esta rodando')
+        main_view = MainView(self.connect_BD)
+        main_view.run()
 
 if __name__ == '__main__':
     DB_USER = os.getenv('DB_USER_PG')

@@ -1,8 +1,8 @@
 import traceback
 import psycopg2
-from service.connect_BD import ConnectBD
+from service.ConnectBD import ConnectBD
 
-class UserRepository(object):
+class UserRepository:
     def __init__(self, connectBDClass: ConnectBD):
         self.connectBD = connectBDClass
 
@@ -14,7 +14,7 @@ class UserRepository(object):
         try:
             cursor = connection.cursor()
             cursor.execute(
-                "INSERT INTO users (nome, login, senha) VALUES ('{}', '{}', '{}')".format(name, email, passkey)
+                "INSERT INTO users (name, email, passkey) VALUES ('{}', '{}', '{}')".format(name, email, passkey)
             )
             connection.commit()
 
