@@ -12,6 +12,7 @@ class Main:
     def run(self):
         main_view = MainView(self.connect_BD)
         main_view.run()
+        print("Hello")
 
 if __name__ == '__main__':
     DB_USER = os.getenv('DB_USER_PG')

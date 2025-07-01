@@ -7,3 +7,9 @@ class UserService:
 
     def create_user(self, name, email, passkey):
         return self.user_Repository.insert(name, email, passkey)
+
+    def delete_by_name(self, name):
+        return self.user_Repository.delete_by_name(name)
+
+    def find_all(self):
+        return self.user_Repository.find_all()

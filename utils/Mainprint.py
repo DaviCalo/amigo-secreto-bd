@@ -6,8 +6,8 @@ def origin_view():
 def user_view():
     print("Selecione uma das opções abaixo:")
     print("1. Criar Usuário")
-    print("2. Deletar Usuário")
-    print("3. Atualizar Usuário")
-    print("4. Mostrar todos os Usuário")
-    print("5. Pesquisar por nome")
-    print("6. Voltar")
+    print("2. Deletar Usuário pelo nome")
+    print("3. Mostrar todos os Usuário")
+    print("4. Pesquisar por nome")
+    print("5. Atualizar Usuário")
+    print("0. Voltar")
