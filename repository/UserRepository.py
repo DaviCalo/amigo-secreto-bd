@@ -3,8 +3,8 @@ import psycopg2
 from service.ConnectBD import ConnectBD
 
 class UserRepository:
-    def __init__(self, connectBDClass: ConnectBD):
-        self.connectBD = connectBDClass
+    def __init__(self, connectBD: ConnectBD):
+        self.connectBD = connectBD
 
     def insert(self, name, email, passkey):
         connection = self.connectBD.open_connect()

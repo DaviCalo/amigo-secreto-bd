@@ -1,11 +1,12 @@
 import traceback
 
+from service.ConnectBD import ConnectBD
 from service.UserService import UserService
 from utils.Mainprint import user_view
 
 class UserView:
-    def __init__(self, user_service: UserService):
-        self.user_service = user_service
+    def __init__(self, connectBD: ConnectBD):
+        self.user_service = UserService(connectBD)
 
     def main_user_view(self):
         user_view()

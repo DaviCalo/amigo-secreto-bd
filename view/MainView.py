@@ -6,10 +6,7 @@ from view.UserView import UserView
 
 class MainView:
     def __init__(self, connectBD: ConnectBD):
-        self.connect_BD = connectBD
-        self.user_repository = UserRepository(self.connect_BD)
-        self.user_service = UserService(self.user_repository)
-        self.user_view = UserView(self.user_service)
+        self.user_view = UserView(connectBD)
 
     def run(self):
         origin_view()

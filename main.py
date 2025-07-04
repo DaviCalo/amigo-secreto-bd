@@ -7,12 +7,10 @@ class Main:
     def __init__(self, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE):
         self.connect_BD = ConnectBD(DB_USER,DB_PASSWORD,DB_HOST,DB_PORT,DB_DATABASE)
         self.create_database = DataBaseService(self.connect_BD, DB_DATABASE)
-        self.create_database.starter()
 
     def run(self):
         main_view = MainView(self.connect_BD)
         main_view.run()
-        print("Hello")
 
 if __name__ == '__main__':
     DB_USER = os.getenv('DB_USER_PG')

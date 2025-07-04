@@ -7,6 +7,7 @@ class DataBaseService:
     def __init__(self, connectBD: ConnectBD, database: str):
         self.connectBD = connectBD
         self._database = database
+        self.starter()
 
     def starter(self):
         try:
