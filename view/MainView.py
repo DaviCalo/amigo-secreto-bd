@@ -1,7 +1,7 @@
 from repository.UserRepository import UserRepository
 from service.ConnectBD import ConnectBD
 from service.UserService import UserService
-from utils.Mainprint import origin_view
+from utils.Prints import origin_view
 from view.UserView import UserView
 
 class MainView:

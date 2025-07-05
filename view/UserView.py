@@ -2,7 +2,7 @@ import traceback
 
 from service.ConnectBD import ConnectBD
 from service.UserService import UserService
-from utils.Mainprint import user_view
+from utils.Prints import user_view
 
 class UserView:
     def __init__(self, connectBD: ConnectBD):

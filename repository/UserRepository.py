@@ -64,7 +64,7 @@ class UserRepository:
             connection = self.connectBD.open_connect()
             cursor = connection.cursor()
 
-            sql_select_all_query = "SELECT id, name, email, passkey FROM users"
+            sql_select_all_query = "SELECT user_id, name, email, passkey FROM users"
             cursor.execute(sql_select_all_query)
             rows = cursor.fetchall()
 

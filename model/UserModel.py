@@ -30,19 +30,3 @@ class Pessoa(object):
     @passkey.setter
     def passkey(self, passkey):
         self._passkey = passkey
-
-    @property
-    def created_at(self):
-        return self._created_at
-
-    @created_at.setter
-    def created_at(self, created_at):
-        self._created_at = created_at
-
-    @property
-    def updated_at(self):
-        return self._updated_at
-
-    @updated_at.setter
-    def updated_at(self, updated_at):
-        self._updated_at = updated_at
