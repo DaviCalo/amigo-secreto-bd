@@ -1,4 +1,4 @@
-class Pessoa(object):
+class User(object):
     @property
     def id(self):
         return self._id

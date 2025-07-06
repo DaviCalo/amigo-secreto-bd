@@ -74,7 +74,6 @@ class DataBaseService:
                             status_group VARCHAR(50) NOT NULL,
                             maximum_value DECIMAL(10, 2),
                             minimum_value DECIMAL(10, 2),
-                            link VARCHAR(2048),
                             draw_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
                             meet_date TIMESTAMP WITHOUT TIME ZONE,
                             location VARCHAR(255),
