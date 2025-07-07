@@ -41,8 +41,7 @@ class DataBaseService:
             conn.close()
 
     def create_table_user(self):
-        conn = self.connectBD.open_connect()
-        cur = conn.cursor()
+        conn, cur = self.connectBD.open_connect()
 
         if self.table_exists('users') is True:
             return
@@ -57,11 +56,11 @@ class DataBaseService:
                       """)
 
         conn.commit()
+
         self.connectBD.close_connection()
 
     def create_table_groups(self):
-        conn = self.connectBD.open_connect()
-        cur = conn.cursor()
+        conn, cur = self.connectBD.open_connect()
 
         if self.table_exists('groups') is True:
             return
@@ -91,8 +90,7 @@ class DataBaseService:
         self.connectBD.close_connection()
 
     def create_table_gifts(self):
-        conn = self.connectBD.open_connect()
-        cur = conn.cursor()
+        conn, cur  = self.connectBD.open_connect()
 
         if self.table_exists('gifts') is True:
             return
@@ -108,8 +106,7 @@ class DataBaseService:
         self.connectBD.close_connection()
 
     def create_table_users_groups(self):
-        conn = self.connectBD.open_connect()
-        cur = conn.cursor()
+        conn, cur = self.connectBD.open_connect()
 
         if self.table_exists('users_groups') is True:
             return
@@ -155,8 +152,7 @@ class DataBaseService:
         self.connectBD.close_connection()
 
     def create_table_wish_list(self):
-        conn = self.connectBD.open_connect()
-        cur = conn.cursor()
+        conn, cur = self.connectBD.open_connect()
 
         if self.table_exists('wish_list') is True:
             return
@@ -185,8 +181,7 @@ class DataBaseService:
         self.connectBD.close_connection()
 
     def create_table_letters(self):
-        conn = self.connectBD.open_connect()
-        cur = conn.cursor()
+        conn, cur = self.connectBD.open_connect()
 
         if self.table_exists('letters') is True:
             return
@@ -217,12 +212,8 @@ class DataBaseService:
         self.create_table_letters()
 
     def table_exists(self, table_name):
-        conn = self.connectBD.open_connect()
-        if conn is None:
-            print("Could not establish database connection to check table existence.")
-            return False
+        conn, cur = self.connectBD.open_connect()
 
-        cur = conn.cursor()
         try:
             cur.execute("""
                    SELECT EXISTS (
@@ -237,6 +228,6 @@ class DataBaseService:
         except psycopg2.Error as e:
             print(f"Error checking table existence for '{table_name}': {e}")
             return False
+
         finally:
             self.connectBD.close_connection()
-

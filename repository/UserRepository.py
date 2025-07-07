@@ -1,20 +1,22 @@
 import traceback
 import psycopg2
+
+from model.UserModel import User
 from service.ConnectBD import ConnectBD
 
 class UserRepository:
     def __init__(self, connectBD: ConnectBD):
         self.connectBD = connectBD
 
-    def insert(self, name, email, passkey):
-        connection = self.connectBD.open_connect()
-        cursor = None
+    def insert(self, user: User):
+        connection, cursor = None, None
         is_success = False
 
         try:
-            cursor = connection.cursor()
+            connection, cursor = self.connectBD.open_connect()
             cursor.execute(
-                "INSERT INTO users (name, email, passkey) VALUES ('{}', '{}', '{}')".format(name, email, passkey)
+                "INSERT INTO users (name, email, passkey) VALUES (%s, %s, %s);",
+                (user.name, user.email, user.passkey)
             )
             connection.commit()
 
@@ -25,20 +27,21 @@ class UserRepository:
             traceback.print_exc()
 
         finally:
-            if connection:
-                cursor.close()
+            if connection and cursor:
                 self.connectBD.close_connection()
+
         return is_success
 
-    def delete_by_name(self, name):
-        connection = self.connectBD.open_connect()
-        cursor = None
+
+    def delete_by_name(self, name: str):
+        connection, cursor = None, None
         is_success = False
 
         try:
-            cursor = connection.cursor()
+            connection, cursor = self.connectBD.open_connect()
             cursor.execute(
-                "DELETE FROM users WHERE nome = {} LIMIT 1".format(name)
+                "DELETE FROM users WHERE nome = %s LIMIT 1;",
+                name
             )
             connection.commit()
 
@@ -49,32 +52,24 @@ class UserRepository:
             traceback.print_exc()
 
         finally:
-            if connection:
-                cursor.close()
+            if connection and cursor:
                 self.connectBD.close_connection()
 
         return is_success
 
+
     def find_all(self):
-        connection = None
-        cursor = None
+        connection, cursor = None, None
         users = []
 
         try:
-            connection = self.connectBD.open_connect()
-            cursor = connection.cursor()
-
-            sql_select_all_query = "SELECT user_id, name, email, passkey FROM users"
+            connection, cursor = self.connectBD.open_connect()
+            sql_select_all_query = "SELECT user_id, name, email, passkey FROM users;"
             cursor.execute(sql_select_all_query)
             rows = cursor.fetchall()
 
             for row in rows:
-                user = {
-                    "id": row[0],
-                    "name": row[1],
-                    "email": row[2],
-                    "passkey": row[3]
-                }
+                user = User(row[0], row[1], row[2], row[3])
                 users.append(user)
 
         except (Exception, psycopg2.Error) as error:
@@ -82,9 +77,57 @@ class UserRepository:
             traceback.print_exc()
 
         finally:
-            if cursor:
-                cursor.close()
-            if connection:
+            if connection and cursor:
                 self.connectBD.close_connection()
 
         return users
+
+
+    def find_by_id(self, user_id: int):
+        connection, cursor = None, None
+        user = None
+
+        try:
+            connection, cursor  = self.connectBD.open_connect()
+            cursor.execute(
+                "SELECT user_id, name, email, passkey FROM users WHERE user_id = %s;",
+                user_id
+            )
+            row = cursor.fetchone()
+
+            if row:
+                user = User(row[0], row[1], row[2], row[3])
+
+        except (Exception, psycopg2.Error) as error:
+            print(f"Error fetching user: {error}")
+            traceback.print_exc()
+
+        finally:
+            if connection and cursor:
+                self.connectBD.close_connection()
+
+        return user
+
+    def update_by_id(self, user: User):
+        connection, cursor = None, None
+        is_success = False
+
+        try:
+            connection, cursor = self.connectBD.open_connect()
+            cursor.execute(
+                "UPDATE users SET name = %s, email = %s, passkey = %s WHERE user_id = %s;",
+                (user.name, user.email, user.passkey, user.user_id)
+            )
+            connection.commit()
+
+            if cursor.rowcount > 0:
+                is_success = True
+
+        except (Exception, psycopg2.Error) as error:
+            traceback.print_exc()
+
+        finally:
+            if connection and cursor:
+                self.connectBD.close_connection()
+
+        return is_success

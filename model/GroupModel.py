@@ -1,7 +1,7 @@
 class Group:
-    def __init__(self, group_id=None, name=None, description=None, status_group=None,
-                 maximum_value=None, minimum_value=None, link=None, draw_date=None,
-                 meet_date=None, location=None, created_user_id=None):
+    def __init__(self, group_id, name, description, status_group,
+                 maximum_value, minimum_value, link, draw_date,
+                 meet_date, location, created_user_id):
         self._group_id = group_id
         self._name = name
         self._description = description

@@ -10,14 +10,17 @@ class ConnectBD:
         self._port = port
         self._database = database
         self._connection = None
+        self._cursor = None
 
     def open_connect(self):
         self._connection = psycopg2.connect(user=self._user, password=self._password,
                                            host=self._host, port=self._port, database=self._database)
-        return self._connection
+        self._cursor = self._connection.cursor()
+        return self._connection, self._cursor
 
     def close_connection(self):
         self._connection.close()
+        self._cursor.close()
 
     def create_connect(self):
         self._connection = psycopg2.connect(user=self._user, password=self._password,

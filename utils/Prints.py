@@ -9,8 +9,8 @@ def user_view():
     print("1. Criar Usuário")
     print("2. Deletar Usuário pelo nome")
     print("3. Mostrar todos os Usuário")
-    print("4. Pesquisar por nome")
-    print("5. Atualizar Usuário")
+    print("4. Pesquisar por id")
+    print("5. Atualizar Usuário por id")
     print("0. Voltar")
 
 def group_view():

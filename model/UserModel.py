@@ -1,11 +1,17 @@
-class User(object):
-    @property
-    def id(self):
-        return self._id
+class User:
+    def __init__(self, user_id, name, email, passkey):
+        self._user_id = user_id
+        self._name = name
+        self._email = email
+        self._passkey = passkey
 
-    @id.setter
-    def id(self, id):
-        self._id = id
+    @property
+    def user_id(self):
+        return self._user_id
+
+    @user_id.setter
+    def user_id(self, user_id):
+        self._user_id = user_id
 
     @property
     def name(self):
@@ -30,3 +36,9 @@ class User(object):
     @passkey.setter
     def passkey(self, passkey):
         self._passkey = passkey
+
+    def __str__(self):
+        return (f"User ID: {self.user_id}\n"
+                f"  Name: {self.name}\n"
+                f"  Email: {self.email}\n"
+                f"  Passkey: {self.passkey}\n")

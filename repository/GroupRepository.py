@@ -10,12 +10,11 @@ class GroupRepository:
         self.connectBD = connectBD
 
     def insert(self, name, description, status_group, maximum_value, minimum_value, draw_date, meet_date, location, created_user_id):
-        connection = self.connectBD.open_connect()
-        cursor = None
+        connection, cursor = None, None
         is_success = False
 
         try:
-            cursor = connection.cursor()
+            connection, cursor = self.connectBD.open_connect()
             cursor.execute(
                 "INSERT INTO groups (name, description, status_group, maximum_value, minimum_value, draw_date, meet_date, location, created_user_id) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(name, description, status_group, maximum_value, minimum_value, draw_date, meet_date, location, created_user_id)
             )
@@ -28,20 +27,18 @@ class GroupRepository:
             traceback.print_exc()
 
         finally:
-            if connection:
-                cursor.close()
+            if connection and cursor:
                 self.connectBD.close_connection()
+
         return is_success
 
+
     def find_all(self):
-        connection = None
-        cursor = None
+        connection, cursor = None, None
         groups = []
 
         try:
-            connection = self.connectBD.open_connect()
-            cursor = connection.cursor()
-
+            connection, cursor = self.connectBD.open_connect()
             sql_select_all_query = "SELECT name, description, status_group, maximum_value, minimum_value, draw_date, meet_date, location, created_user_id, group_id FROM groups"
             cursor.execute(sql_select_all_query)
             rows = cursor.fetchall()
@@ -66,9 +63,31 @@ class GroupRepository:
             traceback.print_exc()
 
         finally:
-            if cursor:
-                cursor.close()
-            if connection:
+            if connection and cursor:
                 self.connectBD.close_connection()
 
         return groups
+
+
+    def update_by_id(self, group: Group):
+        connection, cursor = None, None
+        is_success = False
+
+        try:
+            connection, cursor = self.connectBD.open_connect()
+            cursor.execute(
+                "UPDATE groups SET name = {}, description = {}, status_group = {}, maximum_value = {}, minimum_value = {}, draw_date = {}, meet_date = {}, location = {} WHERE group_id = {};".format(group.group_id, group.description, group.status_group, group.maximum_value, group.minimum_value, group.draw_date, group.meet_date, group.location, group.group_id)
+            )
+            connection.commit()
+
+            if cursor.rowcount > 0:
+                is_success = True
+
+        except (Exception, psycopg2.Error) as error:
+            traceback.print_exc()
+
+        finally:
+            if connection and cursor:
+                self.connectBD.close_connection()
+
+        return is_success
