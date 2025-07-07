@@ -60,8 +60,7 @@ class GiftRepository:
 
         try:
             connection, cursor = self.connectBD.open_connect()
-            sql_select_all_query = "SELECT gift_id, name FROM gifts"
-            cursor.execute(sql_select_all_query)
+            cursor.execute("SELECT gift_id, name FROM gifts")
             rows = cursor.fetchall()
 
             for row in rows:

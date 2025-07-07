@@ -1,5 +1,6 @@
 import traceback
 
+from model.GroupModel import Group
 from service.ConnectBD import ConnectBD
 from service.GroupService import GroupService
 from utils.Prints import group_view
@@ -35,17 +36,21 @@ class GroupView:
 
         is_success = None
         try:
-            is_success = self.group_service.create_group(
-                name_group,
-                description_group,
-                status_group,
-                maximum_value_group,
-                minimum_value_group,
-                draw_date_group,
-                meet_date_group,
-                location_group,
-                created_user_id_group
+            group = Group(
+                group_id=None,
+                name=name_group,
+                description=description_group,
+                status_group=status_group,
+                maximum_value=maximum_value_group,
+                minimum_value=minimum_value_group,
+                link=None,
+                draw_date=draw_date_group,
+                meet_date=meet_date_group,
+                location=location_group,
+                created_user_id=created_user_id_group
             )
+
+            is_success = self.group_service.create_group(group)
 
         except Exception as e:
             traceback.print_exc()
@@ -59,16 +64,12 @@ class GroupView:
         groups = []
         try:
             groups = self.group_service.find_all()
-
-            if groups:
-                for group in groups:
-                    print(group)
-                    print("\n")
-
         except Exception as e:
             traceback.print_exc()
 
         if groups:
+            for group in groups:
+                print(group)
             print(f"Foram encontrados {len(groups)} usuários")
         else:
             print(f"Não foram encontrados nenhum usuário no banco")

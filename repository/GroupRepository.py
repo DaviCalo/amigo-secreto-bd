@@ -9,14 +9,15 @@ class GroupRepository:
     def __init__(self, connectBD: ConnectBD):
         self.connectBD = connectBD
 
-    def insert(self, name, description, status_group, maximum_value, minimum_value, draw_date, meet_date, location, created_user_id):
+    def insert(self, group: Group):
         connection, cursor = None, None
         is_success = False
 
         try:
             connection, cursor = self.connectBD.open_connect()
             cursor.execute(
-                "INSERT INTO groups (name, description, status_group, maximum_value, minimum_value, draw_date, meet_date, location, created_user_id) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(name, description, status_group, maximum_value, minimum_value, draw_date, meet_date, location, created_user_id)
+                "INSERT INTO groups (name, description, status_group, maximum_value, minimum_value, draw_date, meet_date, location, created_user_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (group.name, group.description, group.status_group, group.maximum_value, group.minimum_value, group.draw_date, group.meet_date, group.location, group.created_user_id)
             )
             connection.commit()
 
@@ -39,8 +40,7 @@ class GroupRepository:
 
         try:
             connection, cursor = self.connectBD.open_connect()
-            sql_select_all_query = "SELECT name, description, status_group, maximum_value, minimum_value, draw_date, meet_date, location, created_user_id, group_id FROM groups"
-            cursor.execute(sql_select_all_query)
+            cursor.execute("SELECT name, description, status_group, maximum_value, minimum_value, draw_date, meet_date, location, created_user_id, group_id FROM groups")
             rows = cursor.fetchall()
 
             for row in rows:
@@ -76,7 +76,8 @@ class GroupRepository:
         try:
             connection, cursor = self.connectBD.open_connect()
             cursor.execute(
-                "UPDATE groups SET name = {}, description = {}, status_group = {}, maximum_value = {}, minimum_value = {}, draw_date = {}, meet_date = {}, location = {} WHERE group_id = {};".format(group.group_id, group.description, group.status_group, group.maximum_value, group.minimum_value, group.draw_date, group.meet_date, group.location, group.group_id)
+                "UPDATE groups SET name = %s, description = %s, status_group = %s, maximum_value = %s, minimum_value = %s, draw_date = %s, meet_date = %s, location = %s WHERE group_id = %s;",
+                (group.group_id, group.description, group.status_group, group.maximum_value, group.minimum_value, group.draw_date, group.meet_date, group.location, group.group_id)
             )
             connection.commit()
 
