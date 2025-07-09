@@ -1,7 +1,7 @@
 import traceback
 
 from model.UserModel import User
-from service.ConnectBD import ConnectBD
+from service.DB.ConnectBD import ConnectBD
 from service.UserService import UserService
 from utils.Prints import user_view
 

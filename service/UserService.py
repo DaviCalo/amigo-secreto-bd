@@ -1,6 +1,6 @@
 from model.UserModel import User
 from repository.UserRepository import UserRepository
-from service.ConnectBD import ConnectBD
+from service.DB.ConnectBD import ConnectBD
 
 class UserService:
     def __init__(self, connectBD: ConnectBD):

@@ -1,6 +1,6 @@
 from model.GroupModel import Group
 from repository.GroupRepository import GroupRepository
-from service.ConnectBD import ConnectBD
+from service.DB.ConnectBD import ConnectBD
 
 class GroupService:
     def __init__(self, connectBD: ConnectBD):

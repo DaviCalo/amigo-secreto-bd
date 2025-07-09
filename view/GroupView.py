@@ -1,7 +1,7 @@
 import traceback
 
 from model.GroupModel import Group
-from service.ConnectBD import ConnectBD
+from service.DB.ConnectBD import ConnectBD
 from service.GroupService import GroupService
 from utils.Prints import group_view
 

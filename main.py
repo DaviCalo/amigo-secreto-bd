@@ -1,7 +1,7 @@
 import os
 
-from service.ConnectBD import ConnectBD
-from service.DataBaseService import DataBaseService
+from service.DB.ConnectBD import ConnectBD
+from service.DB.DataBaseService import DataBaseService
 from view.MainView import MainView
 
 class Main:

@@ -2,7 +2,7 @@ import traceback
 import psycopg2
 
 from model.GiftModel import Gift
-from service.ConnectBD import ConnectBD
+from service.DB.ConnectBD import ConnectBD
 
 class GiftRepository:
     def __init__(self, connectBD: ConnectBD):

@@ -3,7 +3,7 @@ import traceback
 import psycopg2
 
 from model.GroupModel import Group
-from service.ConnectBD import ConnectBD
+from service.DB.ConnectBD import ConnectBD
 
 class GroupRepository:
     def __init__(self, connectBD: ConnectBD):
@@ -133,7 +133,7 @@ class GroupRepository:
                 group = Group(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9])
 
         except (Exception, psycopg2.Error) as error:
-            print(f"Error fetching all users: {error}")
+            print(f"Error fetching all groups: {error}")
             traceback.print_exc()
 
         finally:

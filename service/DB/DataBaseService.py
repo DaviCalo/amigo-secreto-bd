@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2 import sql
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from service.ConnectBD import ConnectBD
+from service.DB.ConnectBD import ConnectBD
 
 class DataBaseService:
     def __init__(self, connectBD: ConnectBD, database: str):
@@ -117,7 +117,7 @@ class DataBaseService:
                             user_id INTEGER NOT NULL,
                             recipient_user_id INTEGER,
                             group_id INTEGER NOT NULL,
-                            grift_select_id INTEGER NOT NULL,
+                            grift_select_id INTEGER,
                             
                             CONSTRAINT fk_ug_user
                                 FOREIGN KEY (user_id)
