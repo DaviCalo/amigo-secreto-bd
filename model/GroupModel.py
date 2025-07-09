@@ -1,6 +1,6 @@
 class Group:
     def __init__(self, group_id, name, description, status_group,
-                 maximum_value, minimum_value, link, draw_date,
+                 maximum_value, minimum_value, draw_date,
                  meet_date, location, created_user_id):
         self._group_id = group_id
         self._name = name
@@ -8,7 +8,6 @@ class Group:
         self._status_group = status_group
         self._maximum_value = maximum_value
         self._minimum_value = minimum_value
-        self._link = link
         self._draw_date = draw_date
         self._meet_date = meet_date
         self._location = location
@@ -63,14 +62,6 @@ class Group:
         self._minimum_value = minimum_value
 
     @property
-    def link(self):
-        return self._link
-
-    @link.setter
-    def link(self, link):
-        self._link = link
-
-    @property
     def draw_date(self):
         return self._draw_date
 
@@ -109,7 +100,6 @@ class Group:
                 f"  Status: {self.status_group}\n"
                 f"  Max Value: {self.maximum_value}\n"
                 f"  Min Value: {self.minimum_value}\n"
-                f"  Link: {self.link}\n"
                 f"  Draw Date: {self.draw_date}\n"
                 f"  Meet Date: {self.meet_date}\n"
                 f"  Location: {self.location}\n"

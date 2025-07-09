@@ -16,9 +16,11 @@ class GroupView:
         if optional == 1:
             self.create_group()
         if optional == 2:
-            pass
+            self.delete_by_id()
         if optional == 3:
             self.find_all()
+        if optional == 4:
+            self.update_by_id()
         if optional == 0:
             return
         self.main_group_view()
@@ -32,7 +34,7 @@ class GroupView:
         draw_date_group = input("Digite a data do sorteio:")
         meet_date_group = input("Digite a data do encontro:")
         location_group = input("Digite o local do encontro:")
-        created_user_id_group = int(input("Digite o seu id:"))
+        created_user_id_group = int(input("Digite o seu id de usuário:"))
 
         is_success = None
         try:
@@ -43,7 +45,6 @@ class GroupView:
                 status_group=status_group,
                 maximum_value=maximum_value_group,
                 minimum_value=minimum_value_group,
-                link=None,
                 draw_date=draw_date_group,
                 meet_date=meet_date_group,
                 location=location_group,
@@ -56,9 +57,10 @@ class GroupView:
             traceback.print_exc()
 
         if is_success:
-            print(f"Usuário {name_group} criado com sucesso")
+            print(f"Grupo {name_group} criado com sucesso")
         else:
-            print(f"Usuário {name_group} não criado")
+            print(f"Grupo {name_group} não criado")
+
 
     def find_all(self):
         groups = []
@@ -70,6 +72,57 @@ class GroupView:
         if groups:
             for group in groups:
                 print(group)
-            print(f"Foram encontrados {len(groups)} usuários")
+            print(f"Foram encontrados {len(groups)} grupos")
         else:
-            print(f"Não foram encontrados nenhum usuário no banco")
+            print(f"Não foi encontrado nenhum grupo no banco")
+
+
+    def update_by_id(self):
+        id_group = int(input("Digite o id do grupo que deseja atualizar:"))
+        name_group = input("Digite o nome do grupo:")
+        description_group = input("Digite a descrição do grupo:")
+        maximum_value_group = int(input("Digite o valor minimo dos presentes:"))
+        minimum_value_group = int(input("Digite o valor maximo dos presentes:"))
+        draw_date_group = input("Digite a data do sorteio:")
+        meet_date_group = input("Digite a data do encontro:")
+        location_group = input("Digite o local do encontro:")
+
+        is_success = None
+
+        group = Group(
+            group_id=id_group,
+            name=name_group,
+            description=description_group,
+            status_group=None,
+            maximum_value=maximum_value_group,
+            minimum_value=minimum_value_group,
+            draw_date=draw_date_group,
+            meet_date=meet_date_group,
+            location=location_group,
+            created_user_id=None
+        )
+
+        try:
+            is_success = self.group_service.update_by_id(group)
+        except Exception as e:
+            traceback.print_exc()
+
+        if is_success:
+            print(f"Grupo atualizado com sucesso")
+        else:
+            print(f"Erro na atualização do grupo")
+
+
+    def delete_by_id(self):
+        id_group = int(input("Digite o id do grupo que deseja deletar:"))
+        is_success = None
+
+        try:
+            is_success = self.group_service.delete_by_id(id_group)
+        except Exception as e:
+            traceback.print_exc()
+
+        if is_success:
+            print(f"Grupo deletado com sucesso")
+        else:
+            print(f"Erro ao deletar o grupo")
