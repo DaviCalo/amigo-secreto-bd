@@ -1,22 +1,24 @@
 import traceback
+
 import psycopg2
 
-from model.GiftModel import Gift
+from dto.WishListWithGifts import WishListWithGifts
+from model.WishListModel import WishList
 from service.DB.ConnectBD import ConnectBD
 
-class GiftRepository:
+class WishListRepository:
     def __init__(self, connectBD: ConnectBD):
         self.connectBD = connectBD
 
-    def insert(self, gift: Gift):
+    def insert(self, wish_list: WishList):
         connection, cursor = None, None
         is_success = False
 
         try:
             connection, cursor = self.connectBD.open_connect()
             cursor.execute(
-                "INSERT INTO gifts (name) VALUES (%s)",
-                gift.name
+                "INSERT INTO wish_list (user_group_id, gift_id) VALUES (%s, %s)",
+                (wish_list.user_group_id, wish_list.gift_id)
             )
             connection.commit()
 
@@ -32,98 +34,106 @@ class GiftRepository:
 
         return is_success
 
-    def delete_by_name(self, name):
-        connection, cursor = None, None
-        is_success = False
-
-        try:
-            connection, cursor = self.connectBD.open_connect()
-            cursor.execute(
-                "DELETE FROM gifts WHERE name = %s LIMIT 1",
-                name
-            )
-            connection.commit()
-
-            if cursor.rowcount > 0:
-                is_success = True
-
-        except (Exception, psycopg2.Error) as error:
-            traceback.print_exc()
-
-        finally:
-            if connection and cursor:
-                self.connectBD.close_connection()
-
-        return is_success
-
-    def delete_by_id(self, gift_id: int):
-        connection, cursor = None, None
-        is_success = False
-
-        try:
-            connection, cursor = self.connectBD.open_connect()
-            cursor.execute(
-                "DELETE FROM gifts WHERE gift_id = %s LIMIT 1",
-                gift_id
-            )
-            connection.commit()
-
-            if cursor.rowcount > 0:
-                is_success = True
-
-        except (Exception, psycopg2.Error) as error:
-            traceback.print_exc()
-
-        finally:
-            if connection and cursor:
-                self.connectBD.close_connection()
-
-        return is_success
 
     def find_all(self):
         connection, cursor = None, None
-        gifts = []
+        WishLists = []
 
         try:
             connection, cursor = self.connectBD.open_connect()
-            cursor.execute("SELECT gift_id, name FROM gifts")
+            cursor.execute("SELECT wish_list_id, user_group_id, gift_id FROM wish_list")
             rows = cursor.fetchall()
 
             for row in rows:
-                gift = Gift(row[0], row[1])
-                gifts.append(gift)
+                WishListRow = WishList(
+                    wish_list_id=row[0], user_group_id=row[1], gift_id=row[2]
+                )
+                WishLists.append(WishListRow)
 
         except (Exception, psycopg2.Error) as error:
-            print(f"Error fetching all gifts: {error}")
+            print(f"Error fetching all users: {error}")
             traceback.print_exc()
 
         finally:
             if connection and cursor:
                 self.connectBD.close_connection()
 
-        return gifts
+        return WishLists
 
-    def find_by_name(self, name: str) -> Gift:
+
+    def delete_by_id(self, wish_list_id: int):
         connection, cursor = None, None
-        gift = None
+        is_success = False
 
         try:
             connection, cursor = self.connectBD.open_connect()
             cursor.execute(
-                "SELECT gift_id, name FROM gifts WHERE name = %s;",
-                (name,)
+                "DELETE FROM wish_list WHERE wish_list_id = %s",
+                (wish_list_id,)
             )
+            connection.commit()
+            if cursor.rowcount > 0:
+                is_success = True
+
+        except (Exception, psycopg2.Error) as error:
+            traceback.print_exc()
+        finally:
+            if connection and cursor:
+                self.connectBD.close_connection()
+
+        return is_success
+
+    def find_by_id(self, wish_list_id: str):
+        connection, cursor = None, None
+        WishListRow = None
+
+        try:
+            connection, cursor = self.connectBD.open_connect()
+            cursor.execute(
+                "SELECT wish_list_id, user_group_id, gift_id FROM wish_list WHERE wish_list_id = %s",
+                (wish_list_id,)
+           )
             row = cursor.fetchone()
 
             if row:
-                gift = Gift(row[0], row[1])
+                WishListRow = WishList(
+                    wish_list_id=row[0], user_group_id=row[1], gift_id=row[2]
+                )
 
         except (Exception, psycopg2.Error) as error:
-            print(f"Error fetching user: {error}")
+            print(f"Error fetching all groups: {error}")
             traceback.print_exc()
 
         finally:
             if connection and cursor:
                 self.connectBD.close_connection()
 
-        return gift
+        return WishListRow
+
+    def find_all_gifts_by_user_group(self, user_group_id: int) -> list[WishListWithGifts]:
+        connection, cursor = None, None
+        WishLists = []
+
+        try:
+            connection, cursor = self.connectBD.open_connect()
+            cursor.execute(
+                "SELECT wl.wish_list_id, wl.user_group_id, wl.gift_id, g.gift_name FROM wish_list AS wl, gift AS g WHERE wl.user_group_id = %s AND g.gift_id = wl.gift_id",
+                (user_group_id,)
+           )
+            rows = cursor.fetchall()
+
+            for row in rows:
+                WishListRow = WishListWithGifts(
+                    wish_list_id=row[0], user_group_id=row[1], gift_id=row[2], name_gift=row[3]
+                )
+                WishLists.append(WishListRow)
+
+        except (Exception, psycopg2.Error) as error:
+            print(f"Error fetching all groups: {error}")
+            traceback.print_exc()
+
+        finally:
+            if connection and cursor:
+                self.connectBD.close_connection()
+
+        return WishLists

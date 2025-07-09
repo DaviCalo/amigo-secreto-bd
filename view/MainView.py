@@ -3,12 +3,15 @@ from utils.Prints import origin_view
 from view.GroupView import GroupView
 from view.UserGroupView import UserGroupView
 from view.UserView import UserView
+from view.WishListView import WishListView
+
 
 class MainView:
     def __init__(self, connectBD: ConnectBD):
         self.user_view = UserView(connectBD)
         self.group_view = GroupView(connectBD)
         self.user_group_view = UserGroupView(connectBD)
+        self.wish_list_view = WishListView(connectBD)
 
     def run(self):
         origin_view()
@@ -19,6 +22,8 @@ class MainView:
             self.group_view.main_group_view()
         if option == 3:
             self.user_group_view.main_user_group_view()
+        if option == 4:
+            self.wish_list_view.main_wish_list_view()
         if option == 0:
             return
         self.run()
