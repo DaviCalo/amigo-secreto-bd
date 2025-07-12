@@ -15,8 +15,8 @@ class GiftRepository:
         try:
             connection, cursor = self.connectBD.open_connect()
             cursor.execute(
-                "INSERT INTO gifts (name) VALUES (%s)",
-                gift.name
+                "INSERT INTO gifts (gift_id, name) VALUES (%s, %s)",
+                (gift.gift_id, gift.name)
             )
             connection.commit()
 

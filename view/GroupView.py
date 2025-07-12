@@ -31,8 +31,8 @@ class GroupView:
         status_group = "CREATED"
         maximum_value_group = int(input("Digite o valor minimo dos presentes:"))
         minimum_value_group = int(input("Digite o valor maximo dos presentes:"))
-        draw_date_group = input("Digite a data do sorteio:")
-        meet_date_group = input("Digite a data do encontro:")
+        draw_date_group = input("Digite a data do sorteio: (Ex: 2025-12-20)")
+        meet_date_group = input("Digite a data do encontro: (Ex: 2025-12-20)")
         location_group = input("Digite o local do encontro:")
         created_user_id_group = int(input("Digite o seu id de usuário:"))
 

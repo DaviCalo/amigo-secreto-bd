@@ -21,13 +21,13 @@ class GiftView:
         self.main_gift_view()
 
     def create_gift(self):
-        name = input("Digite o nome do presente")
+        gift_name = input("Digite o nome do presente")
 
         is_success = None
         try:
             gift = Gift(
                 gift_id=None,
-                name=name
+                name=gift_name
             )
 
             is_success = self.gift_service.create_gift(gift)
@@ -36,9 +36,9 @@ class GiftView:
             traceback.print_exc()
 
         if is_success:
-            print(f"Presente {name} adicionado com sucesso")
+            print(f"Presente {gift_name} adicionado com sucesso")
         else:
-            print(f"Presente {name} não foi criado")
+            print(f"Presente {gift_name} não foi criado")
 
 
     def find_all(self):
@@ -49,9 +49,8 @@ class GiftView:
             traceback.print_exc()
 
         if gifts:
+            print(f"Foram encontrados {len(gifts)} presentes no total")
             for gifts in gifts:
                 print(gifts)
-            print(f"Foram encontrados {len(gifts)} presentes no total")
-            print(f"Presentes: {gifts}")
         else:
             print(f"Não foi encontrado nenhum presente no banco")

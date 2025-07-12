@@ -22,12 +22,12 @@ class LetterView:
     def create_letter(self):
         letter_id = input("Digite o ID da carta:")
         message = input("Digite a mensagem a ser registrada:")
-        user_group_id = input("Digite o ID do grupo destinatário:")
+        user_group_id = input("Digite o ID do destinatário:")
         is_success = None
 
         try:
             letter = Letter(
-                id=letter_id,
+                letter_id=letter_id,
                 message=message,
                 user_group_id=user_group_id
             )
@@ -50,9 +50,8 @@ class LetterView:
             traceback.print_exc()
 
         if letters:
+            print(f"Foram encontradas {len(letters)} cartas:")
             for letter in letters:
                 print(letter)
-            print(f"Foram encontradas {len(letters)} cartas:")
-            print(f"Cartas: {letters}")
         else:
             print(f"Atualmente, não há nenhuma carta no banco")
