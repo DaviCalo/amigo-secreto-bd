@@ -21,12 +21,13 @@ class GiftView:
         self.main_gift_view()
 
     def create_gift(self):
+        gift_id = input("Digite o id do presente")
         gift_name = input("Digite o nome do presente")
 
         is_success = None
         try:
             gift = Gift(
-                gift_id=None,
+                gift_id=gift_id,
                 name=gift_name
             )
 

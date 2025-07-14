@@ -8,6 +8,7 @@ class GiftRepository:
     def __init__(self, connectBD: ConnectBD):
         self.connectBD = connectBD
 
+
     def insert(self, gift: Gift):
         connection, cursor = None, None
         is_success = False
@@ -15,7 +16,7 @@ class GiftRepository:
         try:
             connection, cursor = self.connectBD.open_connect()
             cursor.execute(
-                "INSERT INTO gifts (gift_id, name) VALUES (%s, %s)",
+                "INSERT INTO gifts (gift_id, gift_name) VALUES (%s, %s)",
                 (gift.gift_id, gift.name)
             )
             connection.commit()
@@ -39,7 +40,7 @@ class GiftRepository:
         try:
             connection, cursor = self.connectBD.open_connect()
             cursor.execute(
-                "DELETE FROM gifts WHERE name = %s LIMIT 1",
+                "DELETE FROM gifts WHERE gift_name = %s LIMIT 1",
                 name
             )
             connection.commit()
@@ -86,7 +87,7 @@ class GiftRepository:
 
         try:
             connection, cursor = self.connectBD.open_connect()
-            cursor.execute("SELECT gift_id, name FROM gifts")
+            cursor.execute("SELECT gift_id, gift_name FROM gifts")
             rows = cursor.fetchall()
 
             for row in rows:
@@ -110,7 +111,7 @@ class GiftRepository:
         try:
             connection, cursor = self.connectBD.open_connect()
             cursor.execute(
-                "SELECT gift_id, name FROM gifts WHERE name = %s;",
+                "SELECT gift_id, gift_name FROM gifts WHERE gift_name = %s;",
                 (name,)
             )
             row = cursor.fetchone()
